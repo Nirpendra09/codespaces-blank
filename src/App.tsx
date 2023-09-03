@@ -1,25 +1,35 @@
+// src/App.tsx
+
 import React from 'react';
-import logo from './logo.svg';
+import { Provider } from 'react-redux';
+import { BrowserRouter as Router } from 'react-router-dom';
 import './App.css';
+import store from './redux/store';
+import RouterComponent from './router';
+import Sidebar from './components/Sidebar';
+import TopBar from './components/TopBar';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 function App() {
+  const queryClient = new QueryClient();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Provider store={store}>
+      <Router>
+        <div className="flex h-screen overflow-hidden">
+          <Sidebar />
+          <div className="flex-1">
+            <TopBar />
+            <div className="App h-full">
+              <QueryClientProvider client={queryClient}>
+                <RouterComponent />
+              </QueryClientProvider>
+            </div>
+          </div>
+        </div>
+
+      </Router>
+    </Provider>
   );
 }
 
